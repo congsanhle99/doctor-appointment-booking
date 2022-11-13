@@ -53,7 +53,8 @@ input {
   height: 40px !important;
 }
 
-input:focus {
+input:focus,
+.ant-picker {
   outline: none !important;
   box-shadow: none !important;
   border: 1px solid gray !important;
@@ -75,6 +76,7 @@ label {
   width: 100% !important;
   color: white !important;
   font-size: 18px !important;
+  width: max-content !important;
 }
 
 .anchor {
@@ -105,4 +107,20 @@ label {
   width: 5rem;
   height: 5rem;
   color: white;
+}
+
+.page-title {
+  font-size: 24px;
+  color: #000;
+  font-weight: bold;
+}
+
+.ant-picker {
+  border-radius: 2px;
+  border: 1px solid rgba(128, 128, 128, 0.63) !important;
+  height: 40px !important;
+}
+
+.ant-picker-input input {
+  border: none !important;
 }

@@ -88,4 +88,6 @@
   border-radius: 4px;
   box-shadow: 0 0 2px gray;
   height: 82vh;
+  width: 100%;
+  padding: 16px;
 }
