@@ -22,8 +22,14 @@
   transition: padding ease-in 0.2s;
 } */
 
+.logo {
+  color: #fff;
+  font-weight: bold;
+}
+
 .menu {
   /* margin-top: 100px; */
+  margin-right: 16px;
 }
 
 .menu-collapsed {

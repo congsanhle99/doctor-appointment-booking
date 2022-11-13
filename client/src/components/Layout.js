@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "../layout.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Layout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const location = useLocation();
   const userMenu = [
     {
@@ -28,20 +29,38 @@ const Layout = ({ children }) => {
       path: "/profile",
       icon: "ri-file-user-line",
     },
+  ];
+
+  const adminMenu = [
     {
-      name: "Logout",
-      path: "/logout",
-      icon: "ri-logout-box-r-line",
+      name: "Home",
+      path: "/",
+      icon: "ri-home-line",
+    },
+    {
+      name: "Users",
+      path: "/users",
+      icon: "ri-user-line",
+    },
+    {
+      name: "Doctors",
+      path: "/doctors",
+      icon: "ri-user-star-line",
+    },
+    {
+      name: "Profile",
+      path: "/profile",
+      icon: "ri-file-user-line",
     },
   ];
 
-  const menuToBeRendered = userMenu;
+  const menuToBeRendered = user?.isAdmin ? adminMenu : userMenu;
 
   return (
     <div className="main">
       <div className="d-flex layout">
         <div className="sidebar">
-          <div className="sidebar-header">{!collapsed && <h1>lcsanh</h1>}</div>
+          <div className="sidebar-header">{!collapsed && <h1 className="logo">lcsanh</h1>}</div>
           <div className={collapsed ? "menu-collapsed" : "menu"}>
             {menuToBeRendered.map((menu) => {
               const isActive = location.pathname === menu.path;
@@ -52,12 +71,22 @@ const Layout = ({ children }) => {
                 </div>
               );
             })}
+            <div
+              className="d-flex menu-item"
+              onClick={() => {
+                localStorage.clear();
+                navigate("/login");
+              }}
+            >
+              <i className="ri-logout-box-r-line"></i>
+              {!collapsed && <Link to="/login">Logout</Link>}
+            </div>
           </div>
         </div>
         <div className="content">
           <div className="header">
             {collapsed ? (
-              <i class="ri-menu-line action-icon" onClick={() => setCollapsed(!collapsed)}></i>
+              <i className="ri-menu-line action-icon" onClick={() => setCollapsed(!collapsed)}></i>
             ) : (
               <i className="ri-close-line action-icon" onClick={() => setCollapsed(!collapsed)}></i>
             )}
