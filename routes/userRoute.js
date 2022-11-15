@@ -4,6 +4,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleWare = require("../middlewares/authMiddleware");
+const Doctor = require("../models/doctorModel");
 
 router.post("/register", async (req, res) => {
   try {
@@ -60,6 +61,36 @@ router.post("/get-user-info-by-id", authMiddleWare, async (req, res) => {
     }
   } catch (error) {
     res.status(500).send({ message: "Error getting user info", success: false, error });
+  }
+});
+
+// user can is or not a doctor
+// admin approaches account for apply doctor
+router.post("/apply-doctor-account", authMiddleWare, async (req, res) => {
+  try {
+    const newDoctor = new Doctor({ ...req.body, status: "pending" });
+    await newDoctor.save();
+    // find admin
+    const adminUser = await User.findOne({ isAdmin: true });
+    const unseenNotifications = adminUser.unseenNotifications;
+    console.log("unseenNotify", unseenNotifications);
+    unseenNotifications.push({
+      type: "new-doctor-request",
+      message: `${newDoctor.firstName} ${newDoctor.lastName} has applies for a doctor account`,
+      data: {
+        doctorId: newDoctor._id,
+        name: newDoctor.firstName + " " + newDoctor.lastName,
+      },
+      onClickPath: "/admin/doctors",
+    });
+    await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
+    res.status(200).send({
+      success: true,
+      message: "Doctor account applied successfully",
+    });
+  } catch (error) {
+    console.log("Error", error);
+    res.status(500).send({ message: "Error applying doctor account !", success: false, error });
   }
 });
 

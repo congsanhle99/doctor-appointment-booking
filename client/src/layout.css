@@ -50,6 +50,10 @@
   border-radius: 4px;
 }
 
+/* .active-menu-item a {
+  padding-right: 16px;
+} */
+
 .menu-item a,
 .menu-item i {
   color: rgba(255, 255, 255, 0.8);
@@ -90,4 +94,9 @@
   height: 82vh;
   width: 100%;
   padding: 16px;
+}
+
+.antd-badge-count {
+  padding-right: -10px !important;
+  padding-left: -10px !important;
 }
